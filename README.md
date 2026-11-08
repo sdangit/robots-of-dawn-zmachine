@@ -14,8 +14,10 @@ python3 scripts/build.py --c64 '/path/to/ROBODAWN.D64' --inform6 '/path/to/infor
 
 The exact supported disk is identified in disk-hashes.json. Obtain it independently and use only content you are entitled to use. All generated material stays under ignored build/. Do not publish that directory or attach its contents to releases.
 
-Outputs: build/faithful/z5/robots.z5 and build/faithful/z8/robots.z8. This release-4 disk-native runtime differs from historical experimental builds. Previous save files and exact story hashes are not promised compatible.
+Outputs: build/mapper/z5/robots.z5 and build/mapper/z8/robots.z8. This release-5 disk-native runtime differs from historical experimental builds. Previous save files and exact story hashes are not promised compatible.
 
 See docs/BUILD.md, docs/TESTING.md, and docs/PUBLISHING.md. The separate cairn-mapper branch adds labels generated from the supplied disk for mapper presentation.
 
 Project contributions are MIT licensed; original game rights are not granted. See NOTICE.md.
+
+This mapper branch derives short labels from disk descriptions using the original text routines during the build. Labels are generic shortened descriptions plus numeric IDs, not the previous hand-authored landmarks. Startup adds its label after the introduction; subsequent room descriptions and the status line provide mapper cues. Manual Cairn validation is still required.

@@ -40,7 +40,7 @@ def main():
     p.add_argument('--inform6', default=os.environ.get('INFORM6', 'inform6'))
     p.add_argument('--version', choices=('5','8','both'), default='both')
     a = p.parse_args()
-    a.variant = "faithful"
+    a.variant = "mapper"
     hashes = json.loads((ROOT/'disk-hashes.json').read_text())
     paths = input_paths(a.c64, a.apple2, hashes)
     compiler = shutil.which(a.inform6)
@@ -49,7 +49,7 @@ def main():
     work = ROOT/'build'/a.variant/'work'
     # Refresh handwritten sources only. Generated files stay in ignored build/.
     work.mkdir(parents=True,exist_ok=True)
-    for name in ('extract.py','prepare_startup.py','cpu.py','reference.py','mos6502.py','build_story.py','runtime.inf'):
+    for name in ('extract.py','prepare_startup.py','cpu.py','reference.py','mos6502.py','build_story.py','runtime.inf','prepare_labels.py'):
         shutil.copy2(ROOT/'src'/name,work/name)
     env = input_environment(paths)
     env.update(INFORM6=str(Path(compiler).resolve()), PYTHONDONTWRITEBYTECODE='1')
@@ -57,6 +57,7 @@ def main():
         subprocess.run([sys.executable,str(work/script),*map(str,args)],env=env,check=True)
     run('extract.py')
     run('prepare_startup.py')
+    run('prepare_labels.py')
     outputs=[]
     for version in ('5','8') if a.version == 'both' else (a.version,):
         out = ROOT/'build'/a.variant/f'z{version}'

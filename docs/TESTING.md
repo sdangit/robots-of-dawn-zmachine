@@ -13,3 +13,5 @@ Expected text and state are computed privately by executing the supplied disk wi
 The CPU harness and Inform runtime share an instruction-set design; their agreement alone is not independent hardware-emulator verification. Historical VICE comparisons and older broad tests are not fresh results for this source set. See VERIFICATION.md for checks actually completed.
 
 For all-seed startup and save/restart coverage, run scripts/test_startup_saves.py --inform6 /path/to/inform6 --dfrotz /path/to/dfrotz. Its expected results are generated privately from supplied disk execution. It refuses stale staged source copies. Reports remain in ignored build/.
+
+On this branch, use --variant mapper for test_startup_saves.py. Run scripts/test_presentation.py --inform6 /path/to/inform6 --dfrotz /path/to/dfrotz for non-trace mapper text/heading coverage. Normal-mode tests compare against native-executed output after removing only generated presentation labels. They do not establish Cairn mapper UI behavior.

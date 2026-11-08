@@ -14,7 +14,7 @@ hashes=json.loads((ROOT/'disk-hashes.json').read_text())
 env=input_environment(input_paths(a.c64,a.apple2,hashes))
 os.environ.pop('ROBOTS_APPLE_DISK',None)
 os.environ.update(env,INFORM6=str(Path(a.inform6).resolve()))
-work=ROOT/'build/faithful/work'
+work=ROOT/'build/mapper/work'
 if not (work/'memory.bin').exists():p.error('Run scripts/build.py first.')
 for source in (ROOT/'src').iterdir():
  if source.is_file() and source.read_bytes()!=(work/source.name).read_bytes():p.error('Staged sources differ; rebuild first.')

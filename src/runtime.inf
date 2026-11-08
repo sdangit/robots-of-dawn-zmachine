@@ -53,6 +53,7 @@ Array quitword -> 'q' 'u' 'i' 't';
 Array restartword -> 'r' 'e' 's' 't' 'a' 'r' 't';
 [ Keyboard i n c prev result;
  .again;
+ #Ifndef PORT_TRACE; MapStatus(); #Endif;
  #Ifdef PORT_TRACE;
  print "^PORT_STATE:";for(i=$3b59:i<$3e11:i++)Hex(Read(i));
  print "^PORT_SEED:";Hex(seed);print "^PORT_INPUT>^";
@@ -90,6 +91,10 @@ Array restartword -> 'r' 'e' 's' 't' 'a' 'r' 't';
  #Endif;
  BootCase();
  while(1){
+  #Ifndef PORT_TRACE;
+  if(pc==$249e)MapHeading(Read($3e04));
+  if(pc==$247e)map_location=-1;
+  #Endif;
   if(pc==$c0e){Output();continue;}
   if(pc==$cab){Keyboard();continue;}
   if(pc==$d97){seed=FIXED_SEED;if(seed<0)seed=random(256)-1;Write($a2,seed);}
@@ -110,4 +115,17 @@ Array restartword -> 'r' 'e' 's' 't' 'a' 'r' 't';
 [ RestoreNative result;
  @restore -> result;
  print "^Restore failed.^";Return6502();
+];
+
+! Presentation-only labels generated from supplied disk text. No world-rule edits.
+[ MapHeading room;
+ map_location=room;
+ if(room<0 || room>=139)return;
+ new_line;@set_text_style 2;print (string) room_titles-->room;@set_text_style 0;new_line;
+];
+[ MapStatus;
+ @split_window 1;@set_window 1;@set_cursor 1 1;@erase_line 1;
+ if(map_location<0)print "Darkness";
+ else if(map_location<139)print (string) room_titles-->map_location;
+ @set_window 0;
 ];

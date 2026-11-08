@@ -17,3 +17,7 @@ Expected archive SHA-256: 4096da66193e35834e9b6d99bf58681e833ae20e747c3aa7352dba
 Build the compiler outside publishable source and retain its upstream license.
 
 All generated outputs must remain under ignored build/. Start from a fresh checkout or use an empty build directory to verify there are no stale dependencies. A different compiler can produce different bytes. This revision changes story contents and is not guaranteed to load historical save files.
+
+## Mapper-only label stage
+
+This branch writes build/mapper outputs. After native startup preparation, prepare_labels.py reads room-description pointers from the extracted memory and executes the original disk's text routines. Generic shortening plus numeric room identifiers produce private room_titles.json. No hand-authored game-world name table is used. The compiler includes those local labels in the generated story and adds presentation hooks. This is release 5, serial 261108.

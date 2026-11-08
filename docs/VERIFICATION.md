@@ -1,20 +1,18 @@
-# Current verification
+# Mapper verification
 
 Checked on macOS with Python 3.9.6, Inform 6.44 and Frotz 2.55, 2026-11-08.
 
-- Empty-directory rebuild using only reviewed source plus the external disk/compiler reproduced both candidate stories exactly. No historical artifacts or prior generated files were supplied.
-- Private startup artifacts checked against 256 freshly executed native starts: full 64 KiB memory, nine CPU registers, and exact output.
-- Generated startup setters checked in both Z5 and Z8 for every seed: 512 checks of all 61,440 modeled RAM bytes, nine registers plus PC, and exact output. The host intentionally omits the C64 I/O page $D000–$DFFF; this is not a claim of complete C64 hardware emulation.
-- Gameplay regression passed 22 runs, 528 commands and 550 exact emitted-text/696-byte-state comparisons, across seeds 0, 1, 2, 3, 31, 63, 127, 128, 192, 254 and 255.
+- All 256 startup artifacts matched freshly executed native memory (64 KiB), registers, and output.
+- Z5/Z8 passed 512 startup checks of all 61,440 modeled RAM bytes, nine registers plus PC, and exact output. The host intentionally omits the C64 I/O page $D000–$DFFF.
+- Mapper trace regression passed 22 runs, 528 commands and 550 exact emitted-text/696-byte-state comparisons across eleven seeds. Trace mode disables presentation hooks.
+- A separate normal-mode test passed in both formats: 12 commands across four encountered rooms, all native text preserved after removing generated labels, with expected labels present. All 139 generated titles are nonempty and unique. This is not exhaustive visual or Cairn mapper verification.
 - Save/restore, fresh-process restore, and restart passed 32 full-state checks across seeds 0 and 255 in both formats.
-- Nine disk-free packaging tests cover input identity, staged/history blobs, forbidden artifacts, and direct source-stage execution guards.
-- Independent source review found no embedded game narrative, translated routines, editorial room tables, or generated game artifacts in the reviewed source set. Automated audits complement manual review; they are not legal clearance.
+- Independent source review and publication audits found no embedded game narrative, translated game routines, editorial room tables, or generated artifacts in the reviewed source/history. These checks do not confer legal rights.
+- Frotz startup plus 100 LOOK commands took median 0.584 seconds (Z5) and 0.590 seconds (Z8) over three runs. This is not a Cairn UI latency measurement.
 
-Frotz batch timing (three-run median, startup plus 100 LOOK commands): clean Z5/Z8 0.543 seconds versus preserved translated-text builds 0.171/0.174 seconds. This is a local throughput check, not a Cairn UI responsiveness measurement.
+Release 5, serial 261108:
 
-Release 4, serial 261108:
+- Z5 SHA-256: 5d28c0e45453f040dc073b8d7ed189d163fda6fe984ee56407df5ae632200afd.
+- Z8 SHA-256: 7bb55e808d361c115b04f34c3f86abaeaf39503570e88da2e9db6b3f322c67ed.
 
-- Z5: 103,424 bytes; SHA-256 cc6ddb5d4ee1511c31955b073870bdff0ba2aa865adbf4bcd1887c36259a4263.
-- Z8: 103,936 bytes; SHA-256 79b4d3002e1cb1409de963621d4dd70cbeb5c79e1bc16bcdc7863b2aa43d01ec.
-
-Cairn automated observations were inconclusive: an earlier full-native-startup experiment displayed a budget-stop message through accessibility, but normal manual behavior was not established. These newer startup-artifact builds were not automatically tested in Cairn. Manual validation remains pending. Historical broad/VICE audit claims do not apply automatically to this revision. No remote has been created.
+Empty-directory mapper rebuild verification is pending. Manual Cairn validation remains pending. Historical broad/VICE audit claims do not apply automatically to this revision. No remote exists.
