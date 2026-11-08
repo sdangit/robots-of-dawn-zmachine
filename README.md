@@ -1,5 +1,7 @@
 # Robots of Dawn disk-to-Z-machine builder
 
+**Experimental Cairn mapper branch.** Mapper integration remains unfinished. Use main for the faithful runtime; the sampled checks below are not full Cairn compatibility validation.
+
 Build Z5 and Z8 stories locally from your own matching C64 disk image. This repository contains extraction/build scripts and a 6502 compatibility host, not the game or a reconstructed implementation of its rules.
 
 The build extracts memory from the supplied disk, generates private Inform source, and compiles it. Startup is precomputed by executing original disk bytes locally; parser, world rules, and text expansion execute disk bytes at runtime. There are no checked-in startup tables, game-text translations, room labels, game transcripts, or generated story files.
