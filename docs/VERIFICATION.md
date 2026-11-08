@@ -15,4 +15,4 @@ Release 6, serial 261108:
 - Z5 SHA-256: 640fa92eaef365e962fef75f66621cb02906c2f10ca25534d2b233ccf57babcb.
 - Z8 SHA-256: b290e681da5d2be2af1cd2db21edf5c12587532776c1486be307e7f92cc7e799.
 
-An empty-directory mapper rebuild using only reviewed source plus the external disk/compiler reproduced both story hashes exactly; no prior startup or label artifacts were supplied. Manual faithful-r4 and mapper-r5 restore passed; release-6 startup-order confirmation remains pending. See COMPATIBILITY.md. Historical broad/VICE audit claims do not apply automatically to this revision. No remote exists.
+An empty-directory mapper rebuild using only reviewed source plus the external disk/compiler reproduced both story hashes exactly; no prior startup or label artifacts were supplied. Manual faithful-r4 and mapper-r5 restore passed; manual release-6 Cairn testing confirmed initial heading order and headings during LOOK and west/west/south movement. See COMPATIBILITY.md. Historical broad/VICE audit claims do not apply automatically to this revision. No remote exists.

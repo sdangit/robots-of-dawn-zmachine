@@ -20,4 +20,4 @@ See docs/BUILD.md, docs/TESTING.md, and docs/PUBLISHING.md. The separate cairn-m
 
 Project contributions are MIT licensed; original game rights are not granted. See NOTICE.md.
 
-This mapper branch derives short labels from disk descriptions using the original text routines during the build. Labels are generic shortened descriptions plus numeric IDs, not the previous hand-authored landmarks. Startup and subsequent room descriptions place headings at the native room-description boundary; the status line provides an additional mapper cue. Manual Cairn validation is still required.
+This mapper branch derives short labels from disk descriptions using the original text routines during the build. Labels are generic shortened descriptions plus numeric IDs, not the previous hand-authored landmarks. Startup and subsequent room descriptions place headings at the native room-description boundary; the status line provides an additional mapper cue. Manual Cairn release-6 testing confirmed startup and sampled movement headings; compatibility limits are documented in docs/COMPATIBILITY.md.
