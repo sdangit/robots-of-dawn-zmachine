@@ -16,6 +16,6 @@ The exact supported disk is identified in disk-hashes.json. Obtain it independen
 
 Outputs: build/faithful/z5/robots.z5 and build/faithful/z8/robots.z8. This release-4 disk-native runtime differs from historical experimental builds. Previous save files and exact story hashes are not promised compatible.
 
-See docs/BUILD.md, docs/TESTING.md, and docs/PUBLISHING.md. The separate cairn-mapper branch adds labels generated from the supplied disk for mapper presentation.
+See docs/BUILD.md, docs/TESTING.md, and docs/PUBLISHING.md. The separate experimental cairn-mapper branch adds labels generated from the supplied disk for mapper presentation. Cairn-specific behavior remains under development; main is the faithful runtime.
 
 Project contributions are MIT licensed; original game rights are not granted. See NOTICE.md.
