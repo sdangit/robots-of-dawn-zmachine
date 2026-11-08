@@ -10,6 +10,8 @@ Checked on macOS with Python 3.9.6, Inform 6.44 and Frotz 2.55, 2026-11-08.
 - Nine disk-free packaging tests cover input identity, staged/history blobs, forbidden artifacts, and direct source-stage execution guards.
 - Independent source review found no embedded game narrative, translated routines, editorial room tables, or generated game artifacts in the reviewed source set. Automated audits complement manual review; they are not legal clearance.
 
+Frotz batch timing (three-run median, startup plus 100 LOOK commands): clean Z5/Z8 0.543 seconds versus preserved translated-text builds 0.171/0.174 seconds. This is a local throughput check, not a Cairn UI responsiveness measurement.
+
 Release 4, serial 261108:
 
 - Z5: 103,424 bytes; SHA-256 cc6ddb5d4ee1511c31955b073870bdff0ba2aa865adbf4bcd1887c36259a4263.
