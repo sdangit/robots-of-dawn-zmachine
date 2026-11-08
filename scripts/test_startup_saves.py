@@ -103,7 +103,12 @@ def main():
     assert len(artifact['values']) == len(artifact['registers']) == len(artifact['outputs']) == 256
     expected = []
     for seed in range(256):
-        cpu = start(memory, seed)
+        boundaries = []
+        def room_boundary(cpu):
+            boundaries.append([len(cpu.output), cpu.m[0x3e04]])
+            return False
+        cpu = start(memory, seed, {0x249e: room_boundary})
+        assert artifact['room_boundaries'][seed] == boundaries, (seed, 'startup room boundaries')
         reconstructed = bytearray(prepared)
         for address, value in zip(artifact['addresses'], artifact['values'][seed]):
             reconstructed[address] = value
@@ -127,7 +132,7 @@ def main():
         assert 'Unsupported native instruction' not in result.stdout
         (out/(label+'.log')).write_text(result.stdout + result.stderr)
         return result.stdout
-    report = {'variant': a.variant, 'artifact_states': 256, 'artifact_ram_bytes': 65536, 'runtime_ram_bytes': 61440,
+    report = {'variant': a.variant, 'artifact_states': 256, 'exact_native_room_boundaries': True, 'artifact_ram_bytes': 65536, 'runtime_ram_bytes': 61440,
               'runtime_excluded_io_range': '$D000-$DFFF', 'registers': list(REGISTERS)+['pc'], 'formats': []}
     for version in (5, 8):
         story = build('all-startups', STARTUP, version)

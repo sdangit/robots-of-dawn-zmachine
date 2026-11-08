@@ -20,4 +20,6 @@ All generated outputs must remain under ignored build/. Start from a fresh check
 
 ## Mapper-only label stage
 
-This branch writes build/mapper outputs. After native startup preparation, prepare_labels.py reads room-description pointers from the extracted memory and executes the original disk's text routines. Generic shortening plus numeric room identifiers produce private room_titles.json. No hand-authored game-world name table is used. The compiler includes those local labels in the generated story and adds presentation hooks. This is release 5, serial 261108.
+This branch writes build/mapper outputs. After native startup preparation, prepare_labels.py reads room-description pointers from the extracted memory and executes the original disk's text routines. Generic shortening plus numeric room identifiers produce private room_titles.json. No hand-authored game-world name table is used. The compiler includes those local labels in the generated story and adds presentation hooks. This is release 6, serial 261108.
+
+Startup extraction also observes the native room-description entry point and records output offsets and room IDs privately. The generator inserts headings at those recorded boundaries rather than matching embedded prose or appending a heading after the description.

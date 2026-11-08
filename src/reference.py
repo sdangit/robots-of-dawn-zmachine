@@ -7,8 +7,9 @@ def display(cpu):
     elif 32<=value<=126 or 193<=value<=218: cpu.m[0xd3]=(cpu.m[0xd3]+1)%40
     cpu.nz(value); cpu.ret(); return True
 
-def start(memory, seed):
+def start(memory, seed, hooks=None):
     cpu=CPU(memory); cpu.hooks[0xc0e]=display; cpu.m[0xd5]=39; cpu.m[0xa2]=seed
+    if hooks:cpu.hooks.update(hooks)
     cpu.run(0xd4d,stop=0xcab,limit=500000)
     return cpu
 
