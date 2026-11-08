@@ -16,6 +16,8 @@ os.environ.pop('ROBOTS_APPLE_DISK',None)
 os.environ.update(env,INFORM6=str(Path(a.inform6).resolve()))
 work=ROOT/'build/faithful/work'
 if not (work/'memory.bin').exists():p.error('Run scripts/build.py first.')
+for source in (ROOT/'src').iterdir():
+ if source.is_file() and source.read_bytes()!=(work/source.name).read_bytes():p.error('Staged sources differ; rebuild first.')
 sys.path.insert(0,str(work))
 from reference import start,command
 memory=(work/'memory.bin').read_bytes()

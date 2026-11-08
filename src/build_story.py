@@ -7,7 +7,11 @@ HERE=Path(__file__).resolve().parent;ROOT=HERE.parent
 if HERE.name!='work' or HERE.parent.parent.name!='build':
     raise SystemExit('Run scripts/build.py; generated artifacts must stay under private build/<variant>/work/.')
 from mos6502 import OPS
-p=argparse.ArgumentParser();p.add_argument('--unit',type=Path);p.add_argument('--out',type=Path,default=HERE/'out');p.add_argument('--trace',action='store_true');p.add_argument('--seed',type=int,default=-1);p.add_argument('--version',type=int,default=5);a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
+p=argparse.ArgumentParser();p.add_argument('--unit',type=Path);p.add_argument('--out',type=Path,default=HERE/'out');p.add_argument('--trace',action='store_true');p.add_argument('--seed',type=int,default=-1);p.add_argument('--version',type=int,default=5);a=p.parse_args()
+if a.seed < -1 or a.seed > 255:p.error('Seed must be -1 or 0..255.')
+try:a.out.resolve().relative_to(HERE.parent.parent.resolve())
+except ValueError:p.error('Generated output must remain under private build/.')
+a.out.mkdir(parents=True,exist_ok=True)
 import hashlib
 m=(HERE/'memory.bin').read_bytes();
 assert len(m)==65536
