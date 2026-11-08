@@ -1,0 +1,113 @@
+! Host adaptation only: game text/parser/world/rules execute from original bytes.
+[ Read a p; @log_shift a (-12) p; if(p==13) return 0; if(p>=14) a=a-$1000; return ram->a; ];
+[ Write a v p; @log_shift a (-12) p; if(p==13) rfalse; if(p>=14) a=a-$1000; ram->a=v; ];
+[ Fetch v; v=Read(pc); pc++; return v; ];
+[ Word l; l=Fetch(); return l+256*Fetch(); ];
+[ NZ v; v=v&255; fz=(v==0); fn=(v&128)/128; return v; ];
+[ Push v; Write($100+rs,v); rs=(rs-1)&255; ];
+[ Pop; rs=(rs+1)&255; return Read($100+rs); ];
+[ Return6502 l; l=Pop(); pc=l+256*Pop()+1; ];
+[ Flags v; fc=v&1;fz=(v&2)/2;fi=(v&4)/4;fd=(v&8)/8;fv=(v&64)/64;fn=(v&128)/128; ];
+[ Compare r v; fc=(r>=v); NZ(r-v); ];
+[ Arithmetic v sub rhs result lo hi binary;
+ rhs=v;if(sub)rhs=255-v;
+ result=ra+rhs+fc; binary=result&255;
+ fv=((255-Xor(ra,rhs))&Xor(ra,binary)&128)/128;
+ if(fd) {
+  if(sub) {
+   lo=(ra&15)-(v&15)-(1-fc);hi=(ra/16)-(v/16);
+   if(lo<0){lo=lo-6;hi--;}
+   if(hi<0)hi=hi-6;
+   fc=(result>255);ra=NZ(hi*16+(lo&15));
+  } else {
+   lo=(ra&15)+(v&15)+fc;hi=(ra/16)+(v/16);
+   if(lo>9)lo=lo+6;if(lo>15)hi++;if(hi>9)hi=hi+6;
+   fc=(hi>15);ra=NZ(hi*16+(lo&15));
+  }
+ } else {fc=(result>255);ra=NZ(result);}
+];
+[ Xor a b; return (a|b)&~(a&b); ];
+[ Hex v c; v=v&255;c=48+v/16+(v/16>9)*7;print(char)c;c=48+(v&15)+((v&15)>9)*7;print(char)c; ];
+[ Bad; print "^Unsupported native instruction at "; Hex(lastpc/256);Hex(lastpc);print " opcode ";Hex(op);print "^";@quit; ];
+[ Emit c;
+ ra=c;Write($6f,c);
+ #Ifdef PORT_TRACE;Hex(c);#Ifnot;
+ if(c==13) new_line;
+ else if(c>=193 && c<=218)print(char)c-128;
+ else if(c>=65 && c<=90)print(char)c+32;
+ else if(c>=32 && c<=126)print(char)c;
+ #Endif;
+ if(c==13)Write($d3,0);
+ else if((c>=32 && c<=126)||(c>=193 && c<=218))Write($d3,(Read($d3)+1)%40);
+ NZ(ra);
+];
+[ Output;Emit(ra);Return6502(); ];
+[ Match word len i;
+ if(inputbuf->1~=len)rfalse;
+ for(i=0:i<len:i++)if(inputbuf->(i+2)~=word->i)rfalse;
+ rtrue;
+];
+Array saveword -> 's' 'a' 'v' 'e';
+Array restoreword -> 'r' 'e' 's' 't' 'o' 'r' 'e';
+Array quitword -> 'q' 'u' 'i' 't';
+Array restartword -> 'r' 'e' 's' 't' 'a' 'r' 't';
+[ Keyboard i n c prev result;
+ .again;
+ #Ifdef PORT_TRACE;
+ print "^PORT_STATE:";for(i=$3b59:i<$3e11:i++)Hex(Read(i));
+ print "^PORT_SEED:";Hex(seed);print "^PORT_INPUT>^";
+ #Ifnot; print "^? "; #Endif;
+ inputbuf->1=0;@aread inputbuf 0 -> result;
+ if(Match(quitword,4)){print "^Goodbye.^";@quit;}
+ if(Match(restartword,7)){@restart;}
+ if(Match(saveword,4)){
+  @save -> result;
+  if(result==0)print "^Save failed.^";
+  if(result==1)print "^Saved.^";
+  if(result==2)print "^Restored.^";
+  jump again;
+ }
+ if(Match(restoreword,7)){
+  @restore -> result;
+  print "^Restore failed.^";jump again;
+ }
+ n=0;prev=32;
+ for(i=0:i<inputbuf->1:i++){
+  c=inputbuf->(i+2);if(c>=97 && c<=122)c=c-32;
+  if(c==9)c=32;
+  if(c==32 && prev==32)continue;
+  Write($800+n,c);n++;prev=c;
+ }
+ if(n>0 && prev==32)n--;
+ Write($800+n,32);Write($801+n,0);
+ ra=0;Return6502();turns++;
+];
+[ Main;
+ #Ifdef PORT_TRACE;@buffer_mode 0;#Endif;
+ #Ifndef PORT_TRACE;
+ print "^ROBOTS OF DAWN^Epyx, 1984 - Z-machine edition^";
+ print "SAVE and RESTORE use your interpreter's save files. QUIT exits; RESTART starts a new case.^";
+ #Endif;
+ BootCase();
+ while(1){
+  if(pc==$c0e){Output();continue;}
+  if(pc==$cab){Keyboard();continue;}
+  if(pc==$d97){seed=FIXED_SEED;if(seed<0)seed=random(256)-1;Write($a2,seed);}
+  if(pc==$7e66){SaveNative();continue;}
+  if(pc==$7f51){RestoreNative();continue;}
+  lastpc=pc;op=Fetch();indirect(dispatch-->op);
+ }
+];
+
+! Also adapt parsed SAVE / LOAD routes, bypassing C64 device calls.
+[ SaveNative result;
+ Return6502();
+ @save -> result;
+ if(result==0)print "^Save failed.^";
+ if(result==1)print "^Saved.^";
+ if(result==2)print "^Restored.^";
+];
+[ RestoreNative result;
+ @restore -> result;
+ print "^Restore failed.^";Return6502();
+];

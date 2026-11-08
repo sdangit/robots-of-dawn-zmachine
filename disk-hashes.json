@@ -1,0 +1,12 @@
+{
+  "c64": {
+    "filename": "ROBODAWN.D64",
+    "bytes": 174848,
+    "sha256": "4d468a9190dee37e2a1d820e17bccd6558062d600ad14d1abba16cbbf5bb8dbf"
+  },
+  "apple2": {
+    "filename": "Robots of Dawn (1984)(Epyx).do",
+    "bytes": 143360,
+    "sha256": "0e462702d2dd57fe06f2d66477ac3adbf12baf1c3716075eb8cc3788876956d8"
+  }
+}
