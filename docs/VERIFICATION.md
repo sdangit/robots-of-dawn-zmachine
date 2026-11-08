@@ -15,4 +15,4 @@ Release 5, serial 261108:
 - Z5 SHA-256: 5d28c0e45453f040dc073b8d7ed189d163fda6fe984ee56407df5ae632200afd.
 - Z8 SHA-256: 7bb55e808d361c115b04f34c3f86abaeaf39503570e88da2e9db6b3f322c67ed.
 
-Empty-directory mapper rebuild verification is pending. Manual Cairn validation remains pending. Historical broad/VICE audit claims do not apply automatically to this revision. No remote exists.
+An empty-directory mapper rebuild using only reviewed source plus the external disk/compiler reproduced both story hashes exactly; no prior startup or label artifacts were supplied. Manual Cairn validation remains pending. Historical broad/VICE audit claims do not apply automatically to this revision. No remote exists.
